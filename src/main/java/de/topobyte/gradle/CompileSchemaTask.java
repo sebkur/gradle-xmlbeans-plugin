@@ -53,7 +53,7 @@ public class CompileSchemaTask extends ConventionTask
             throw new InvalidUserDataException("You need to specify the input files via 'input'");
         }
 
-        System.out.println("Generating files from input directories:");
+        System.out.println("Compiling sources and classes from input schemas...");
 
         Path projectDir = project.getProjectDir().toPath();
         Path buildDir = project.getBuildDir().toPath();
