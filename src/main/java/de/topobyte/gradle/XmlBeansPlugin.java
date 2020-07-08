@@ -19,11 +19,13 @@ package de.topobyte.gradle;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.Task;
 import org.gradle.api.artifacts.dsl.DependencyHandler;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.SourceSet;
+import org.gradle.language.jvm.tasks.ProcessResources;
 import org.gradle.plugins.ide.eclipse.EclipsePlugin;
 
 import java.nio.file.Path;
@@ -47,6 +49,7 @@ public class XmlBeansPlugin implements Plugin<Project>
         task.setConfiguration(extension);
 
         project.getTasks().findByName("compileJava").dependsOn(task);
+        project.getTasks().findByName("processResources").dependsOn(task);
 
         if (project.getPlugins().hasPlugin(EclipsePlugin.class)) {
             project.getTasks().findByName("eclipse").dependsOn(task);
@@ -68,6 +71,10 @@ public class XmlBeansPlugin implements Plugin<Project>
         ConfigurableFileCollection files = project.files(classes);
         DependencyHandler dependencies = project.getDependencies();
         dependencies.add("compile", dependencies.create(files));
+
+        ProcessResources processResources = (ProcessResources) project.getTasks()
+                .findByName("processResources");
+        processResources.from(classes);
     }
 
 }
