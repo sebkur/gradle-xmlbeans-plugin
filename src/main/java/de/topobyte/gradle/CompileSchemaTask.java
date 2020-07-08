@@ -59,7 +59,7 @@ public class CompileSchemaTask extends ConventionTask
         Path buildDir = project.getBuildDir().toPath();
 
         Path source = Util.getSourceDir(buildDir);
-        Path output  = Util.getClassesDir(buildDir);
+        Path output = Util.getClassesDir(buildDir);
 
         List<Path> xsdPaths = new ArrayList<>();
         List<String> fileNames = extension.getInput();

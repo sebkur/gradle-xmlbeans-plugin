@@ -29,38 +29,38 @@ import java.nio.file.Path;
 public class XmlBeansPlugin implements Plugin<Project>
 {
 
-	@Override
-	public void apply(final Project project)
-	{
-		Logger logger = project.getLogger();
-		logger.info("applying xmlbeans plugin");
+    @Override
+    public void apply(final Project project)
+    {
+        Logger logger = project.getLogger();
+        logger.info("applying xmlbeans plugin");
 
-		XmlBeansPluginExtension extension = project.getExtensions().create(
-				"xmlBeans",
-				XmlBeansPluginExtension.class);
+        XmlBeansPluginExtension extension = project.getExtensions().create(
+                "xmlBeans",
+                XmlBeansPluginExtension.class);
 
-		CompileSchemaTask task = project.getTasks().create(
-				"compileSchema",
-				CompileSchemaTask.class);
-		task.setConfiguration(extension);
+        CompileSchemaTask task = project.getTasks().create(
+                "compileSchema",
+                CompileSchemaTask.class);
+        task.setConfiguration(extension);
 
-		project.getTasks().findByName("compileJava").dependsOn(task);
+        project.getTasks().findByName("compileJava").dependsOn(task);
 
-		if (project.getPlugins().hasPlugin(EclipsePlugin.class)) {
-			project.getTasks().findByName("eclipse").dependsOn(task);
-			project.getTasks().findByName("eclipseClasspath").dependsOn(task);
-			project.getTasks().findByName("eclipseProject").dependsOn(task);
-		}
+        if (project.getPlugins().hasPlugin(EclipsePlugin.class)) {
+            project.getTasks().findByName("eclipse").dependsOn(task);
+            project.getTasks().findByName("eclipseClasspath").dependsOn(task);
+            project.getTasks().findByName("eclipseProject").dependsOn(task);
+        }
 
-		Path pathBuildDir = project.getBuildDir().toPath();
-		Path source = Util.getSourceDir(pathBuildDir);
+        Path pathBuildDir = project.getBuildDir().toPath();
+        Path source = Util.getSourceDir(pathBuildDir);
 
-		SourceSet sourceSets = project.getConvention()
-				.getPlugin(JavaPluginConvention.class).getSourceSets()
-				.findByName("main");
-		sourceSets.java(sourceSet -> {
-			sourceSet.srcDir(source);
-		});
-	}
+        SourceSet sourceSets = project.getConvention()
+                .getPlugin(JavaPluginConvention.class).getSourceSets()
+                .findByName("main");
+        sourceSets.java(sourceSet -> {
+            sourceSet.srcDir(source);
+        });
+    }
 
 }
