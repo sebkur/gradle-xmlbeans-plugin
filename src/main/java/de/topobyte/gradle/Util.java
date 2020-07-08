@@ -29,7 +29,7 @@ public class Util
 
     public static Path getClassesDir(Path pathBuildDir)
     {
-        return pathBuildDir.resolve("classes/java/main");
+        return pathBuildDir.resolve("generatedClassesXmlBeans");
     }
 
 }

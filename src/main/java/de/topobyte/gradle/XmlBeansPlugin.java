@@ -19,6 +19,8 @@ package de.topobyte.gradle;
 
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
+import org.gradle.api.artifacts.dsl.DependencyHandler;
+import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.logging.Logger;
 import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.SourceSet;
@@ -54,6 +56,7 @@ public class XmlBeansPlugin implements Plugin<Project>
 
         Path pathBuildDir = project.getBuildDir().toPath();
         Path source = Util.getSourceDir(pathBuildDir);
+        Path classes = Util.getClassesDir(project.getBuildDir().toPath());
 
         SourceSet sourceSets = project.getConvention()
                 .getPlugin(JavaPluginConvention.class).getSourceSets()
@@ -61,6 +64,10 @@ public class XmlBeansPlugin implements Plugin<Project>
         sourceSets.java(sourceSet -> {
             sourceSet.srcDir(source);
         });
+
+        ConfigurableFileCollection files = project.files(classes);
+        DependencyHandler dependencies = project.getDependencies();
+        dependencies.add("compile", dependencies.create(files));
     }
 
 }
