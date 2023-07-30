@@ -1,9 +1,9 @@
 wrapper {
-    gradleVersion = '5.2.1'
+    gradleVersion = '7.6.1'
 }
 
 apply plugin: 'java'
-apply plugin: 'maven'
+apply plugin: 'maven-publish'
 apply plugin: 'com.gradle.plugin-publish'
 
 group = pGroup
@@ -35,16 +35,16 @@ repositories {
     jcenter()
     mavenCentral()
     maven {
-        url 'http://mvn.topobyte.de'
+        url 'https://mvn.topobyte.de'
     }
 }
 
 dependencies {
-    compile gradleApi()
-    compile localGroovy()
-    compile 'org.apache.xmlbeans:xmlbeans:3.1.0'
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation 'org.apache.xmlbeans:xmlbeans:3.1.0'
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
@@ -71,23 +71,35 @@ artifacts {
 
 def pomInfo = new XmlSlurper().parse(file('info.pom'));
 
-afterEvaluate { project ->
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                pom.project {
-                    name pomInfo.name
-                    description pomInfo.description
-                    url pomInfo.url
-                    licenses {
-                        license {
-                            name pomInfo.licenseName
-                            url pomInfo.licenseUrl
-                            distribution pomInfo.licenseDistribution
-                        }
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            pom {
+                name = "$pomInfo.name"
+                description = "$pomInfo.description"
+                url = "$pomInfo.url"
+                licenses {
+                    license {
+                        name = "$pomInfo.licenseName"
+                        url = "$pomInfo.licenseUrl"
+                        distribution = "$pomInfo.licenseDistribution"
                     }
                 }
             }
         }
+    }
+}
+
+if (project.hasProperty("publishForTesting")) {
+    publishing {
+        repositories {
+            maven{
+                url = 'maven-repo'
+            }
+        }
+    }
+    tasks.withType(GenerateModuleMetadata) {
+        enabled = false
     }
 }
