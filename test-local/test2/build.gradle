@@ -1,12 +1,11 @@
 buildscript {
     repositories {
         maven { url '../../maven-repo' }
-        mavenCentral()
-        //maven { url 'https://plugins.gradle.org/m2/' }
-        //maven { url 'http://mvn.topobyte.de' }
+        maven { url 'https://plugins.gradle.org/m2/' }
+        maven { url 'https://mvn.topobyte.de' }
     }
     dependencies {
-        classpath 'de.topobyte:gradle-xmlbeans-plugin:0.0.1'
+        classpath 'de.topobyte:gradle-xmlbeans-plugin:0.1.0'
     }
 }
 
