@@ -70,7 +70,7 @@ public class XmlBeansPlugin implements Plugin<Project>
 
         ConfigurableFileCollection files = project.files(classes);
         DependencyHandler dependencies = project.getDependencies();
-        dependencies.add("compile", dependencies.create(files));
+        dependencies.add("implementation", dependencies.create(files));
 
         ProcessResources processResources = (ProcessResources) project.getTasks()
                 .findByName("processResources");
