@@ -1,0 +1,25 @@
+dependencies {
+    implementation 'org.apache.xmlbeans:xmlbeans:3.0.2'
+    testImplementation 'junit:junit:4.12'
+}
+
+xmlBeans {
+    input = []
+    input += 'test.xsd'
+}
+
+eclipse.project.name = 'xmlbeans-gradle-plugin-test1'
+
+task copyJars(type: Copy) {
+    into "$buildDir/lib-run"
+    from jar
+}
+
+task copyDeps(type: Copy) {
+    into "$buildDir/lib-run"
+    from configurations.runtimeClasspath
+}
+
+task createRuntime(dependsOn: [copyJars, copyDeps]) {
+    description 'Setup the execution environment for the main scripts'
+}

@@ -22,3 +22,17 @@ pwd
 JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/ ./gradlew clean test createRuntime
 ./scripts/Test
 popd
+
+pushd .
+cd test3
+pwd
+JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/ ./gradlew clean test createRuntime
+./scripts/Test
+popd
+
+pushd .
+cd test3
+pwd
+JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/ ./gradlew clean test createRuntime
+./scripts/Test
+popd

@@ -1,0 +1,24 @@
+<config xmlns="http://example.com/config/parser">
+	<map key="place">
+		<classes values="city,town,village,hamlet" name="required" />
+		<classes values="borough,suburb,quarter,neighborhood" name="required" />
+		<classes values="island" name="required" />
+		<classes values="islet" name="required" />
+		<class value="neighbourhood" cat="neighborhood" name="required" />
+	</map>
+	<map key="railway">
+		<class value="station" cat="railwaystation" />
+		<class value="tram_stop" cat="tramstop" />
+		<class value="halt" cat="railwayhalt" />
+	</map>
+	<map key="leisure">
+		<class value="park" name="required" />
+		<class value="playground" />
+	</map>
+	<map key="natural">
+		<class value="water" name="required" />
+		<class value="peak" forcesingle="true" />
+		<class value="volcano" forcesingle="true" />
+	</map>
+	<ignore key="name" pattern="[0-9]+[a-zA-Z]?"/>
+</config>
