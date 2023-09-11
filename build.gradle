@@ -1,27 +1,27 @@
 wrapper {
-    gradleVersion = '7.6.1'
+    gradleVersion = '8.3'
 }
 
-apply plugin: 'java'
-apply plugin: 'maven-publish'
 apply plugin: 'com.gradle.plugin-publish'
 
 group = pGroup
 version = pVersion
 description = pDescription
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+java {
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
 
 if (project.hasProperty("topobyte")) {
     apply from: 'file:///' + System.getProperty("user.home") \
-        + '/.gradle/topobyte.gradle'
+             + '/.gradle/topobyte.gradle'
 }
 
 buildscript {
     dependencies {
-        classpath 'junit:junit:4.12'
-        classpath 'com.gradle.publish:plugin-publish-plugin:0.9.9'
+        classpath 'junit:junit:4.13.1'
+        classpath 'com.gradle.publish:plugin-publish-plugin:1.2.1'
     }
     repositories {
         mavenCentral()
@@ -32,7 +32,6 @@ buildscript {
 }
 
 repositories {
-    jcenter()
     mavenCentral()
     maven {
         url 'https://mvn.topobyte.de'
@@ -40,41 +39,36 @@ repositories {
 }
 
 dependencies {
-    implementation gradleApi()
-    implementation localGroovy()
     implementation 'org.apache.xmlbeans:xmlbeans:3.1.0'
 
-    testImplementation 'junit:junit:4.12'
-}
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-pluginBundle {
-  website = 'http://www.topobyte.de'
-  vcsUrl = 'https://github.com/sebkur/gradle-xmlbeans-plugin'
-  description = 'Topobyte XMLBeans plugin'
-
-  plugins {
-    xmlBeansPlugin {
-      id = 'de.topobyte.xmlbeans-gradle-plugin'
-      displayName = 'Topobyte XMLBeans plugin'
-    }
-  }
-}
-
-artifacts {
-    archives sourcesJar
+    testImplementation 'junit:junit:4.13.1'
 }
 
 def pomInfo = new XmlSlurper().parse(file('info.pom'));
 
+gradlePlugin {
+    website = 'http://www.topobyte.de'
+    vcsUrl = 'https://github.com/sebkur/gradle-xmlbeans-plugin'
+    description = 'Topobyte XMLBeans plugin'
+
+    plugins {
+        xmlBeansPlugin {
+            id = 'de.topobyte.xmlbeans-gradle-plugin'
+            displayName = "$pomInfo.name"
+            implementationClass = 'de.topobyte.gradle.XmlBeansPlugin'
+            description = "$pomInfo.description"
+            website = "$pomInfo.url"
+        }
+    }
+}
+
+tasks.withType(Javadoc).configureEach {
+    enabled = false
+}
+
 publishing {
     publications {
-        maven(MavenPublication) {
-            from components.java
+        pluginMaven(MavenPublication) {
             pom {
                 name = "$pomInfo.name"
                 description = "$pomInfo.description"
@@ -94,7 +88,7 @@ publishing {
 if (project.hasProperty("publishForTesting")) {
     publishing {
         repositories {
-            maven{
+            maven {
                 url = 'maven-repo'
             }
         }
