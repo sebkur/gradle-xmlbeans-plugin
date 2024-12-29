@@ -1,3 +1,5 @@
+import groovy.xml.XmlSlurper
+
 wrapper {
     gradleVersion = '8.3'
 }
