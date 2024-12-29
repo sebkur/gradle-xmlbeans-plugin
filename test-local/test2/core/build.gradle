@@ -8,7 +8,7 @@ xmlBeans {
     input += 'test.xsd'
 }
 
-eclipse.project.name = 'xmlbeans-gradle-plugin-test1'
+eclipse.project.name = 'xmlbeans-gradle-plugin-test2'
 
 task copyJars(type: Copy) {
     into "$buildDir/lib-run"
