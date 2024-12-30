@@ -46,6 +46,7 @@ public class XmlBeansPlugin implements Plugin<Project>
         CompileSchemaTask task = project.getTasks().create(
                 "compileSchema",
                 CompileSchemaTask.class);
+        task.setDescription("Compiles the configured xmlbeans schemata.");
         task.setConfiguration(extension);
 
         project.getTasks().findByName("compileJava").dependsOn(task);
